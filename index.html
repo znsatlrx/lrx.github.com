@@ -1,0 +1,117 @@
+<!doctype html>
+<html>
+<head>
+<meta charset="utf-8">
+<meta name="author" content="智能社 - zhinengshe.com" />
+<meta name="copyright" content="智能社 - zhinengshe.com" />
+<meta name="description" content="智能社是一家专注于web前端开发技术的公司，目前主要提供JavaScript培训和HTML5培训两项服务，同时还推出了大量javascript基础知识教程，智能课堂为你带来全新的学习方法和快乐的学习体验。" />
+<title>智能社— http://www.zhinengshe.com</title>
+<style>
+	*{
+		margin: 0;
+		padding: 0;
+		list-style: none;
+	}
+	input{
+		width: 537px;
+		height: 34px;
+		border:1px solid #ccc;
+		margin:50px auto 0;
+		display: block;
+		font-size: 18px;	
+		padding-left: 3px;
+	}
+	#ul1{
+		width: 540px;
+		border:1px solid #ccc;
+		border-top: none;
+		margin:0 auto;
+		display: none;
+	}
+	li{
+		height: 34px;
+		line-height: 34px;
+		padding-left: 5px;
+	}
+	.on{
+		background: #ccc;
+	}
+</style>
+<script src="jsonp.js"></script>
+<script>
+	window.onload = function(){
+		var oT = document.getElementById('text');
+		var oUl = document.getElementById('ul1');
+		var iNow = -1;
+		var oldValue = '';
+
+		oT.onkeyup = function(ev){
+			var oEvent = ev || event;
+			if(oEvent.keyCode == 40 || oEvent.keyCode == 38){
+				return false;
+			}
+			oldValue = oT.value;
+			jsonp({
+				url:'https://sp0.baidu.com/5a1Fazu8AA54nxGko9WTAnF6hhy/su',
+				data:{
+					wd:oT.value
+				},
+				success:function(json){
+					oUl.style.display = 'block';
+					oUl.innerHTML = '';
+					var arr = json.s;
+					for(var i=0; i<arr.length; i++){
+						var oLi = document.createElement('li');
+						oLi.innerHTML = arr[i];
+						oUl.appendChild(oLi);
+					}
+				}
+			})
+		}
+
+		var aLi = oUl.children;
+		oT.onkeydown = function(ev){
+			var oEvent = ev || event;
+			if(oEvent.keyCode == 40){
+				iNow++;
+				for(var i=0; i<aLi.length; i++){
+					aLi[i].className = '';
+				}
+				if(iNow == 10){
+					oT.value = oldValue;
+					iNow = -1;
+				}else{
+					aLi[iNow].className = 'on';
+					oT.value = aLi[iNow].innerHTML;
+				}
+			}
+
+			if(oEvent.keyCode == 38){
+				iNow--;
+				for(var i=0; i<aLi.length; i++){
+					aLi[i].className = '';
+				}
+				if(iNow <= -1){
+					oT.value = oldValue;
+					iNow = 10;
+				}else{
+					aLi[iNow].className = 'on';
+					oT.value = aLi[iNow].innerHTML;
+				}
+			}
+
+			if(oEvent.keyCode == 13){
+				window.open('https://www.baidu.com/s?wd='+oT.value);
+			}
+		}
+	}
+</script>
+</head>
+
+<body>
+	<input type="text" id="text">
+	<ul id="ul1">
+		
+	</ul>
+</body>
+</html>
